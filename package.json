@@ -1,11 +1,13 @@
 {
-  "name": "node-react-renderer",
+  "name": "node-gem",
   "version": "1.0.0",
-  "description": "",
+  "description": "node gem for ruby",
   "main": "server.js",
+  "repository": "eetay/node-gem",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "license": "Samanage (c)",
   "author": "Princess Lea",
   "dependencies": {
     "browserify": "^13.0.0",
