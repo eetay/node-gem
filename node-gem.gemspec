@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'samanage-node-gem'
+  s.name        = 'node-gem'
   s.version     = '1.0.0'
   s.date        = '2016-01-28'
   s.summary     = "Node operations"
