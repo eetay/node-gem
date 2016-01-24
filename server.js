@@ -1,15 +1,45 @@
 var safeStringify = function(x) {
   return JSON.stringify(x)
 }
-var http = require('http'),
-    browserify = require('browserify'),
-    literalify = require('literalify'),
-    React = require('react'),
-    ReactDOMServer = require('react-dom/server'),
-    DOM = React.DOM, body = DOM.body, div = DOM.div, script = DOM.script,
-    App = null
-    // This is our React component, shared by server and browser thanks to browserify
-process.argv.forEach(function (val, index, array) {
+
+var
+  fs = require('fs'),
+  pdf = require('html-pdf'),
+//  http = require('http'),
+  browserify = require('browserify'),
+  literalify = require('literalify'),
+  React = require('react'),
+  ReactDOMServer = require('react-dom/server'),
+  DOM = React.DOM, body = DOM.body, div = DOM.div, script = DOM.script,
+  App = null // This is our React component, shared by server and browser thanks to browserify
+
+var x=false;
+
+var writeCallback = function(err, res) {
+  console.log('writeCallback');
+  if (err) return console.log(err);
+  console.log(res); // { filename: '/app/businesscard.pdf' }
+}
+
+var formats = {
+  'pdf': {
+    'process': function(html, file) {
+      console.log(html)
+      pdf.create(html, { format: 'Letter' }).toFile(file, writeCallback)
+    },
+    'ext': '.pdf'
+  },
+  'html': {
+    'process': function(html, file) {
+      fs.writeFile(file, html, writeCallback)
+    },
+    'ext': '.html'
+  }
+}
+
+
+process.argv.forEach(
+  function (val, index, array) {
     if (index < 2) return;
     App = React.createFactory(require(val))
 
@@ -58,8 +88,7 @@ process.argv.forEach(function (val, index, array) {
       script({src: '/bundle.js'})
     ))
 
-    // Return the page to the browser
-    console.log(html)
-    var a=0;
-    for (var i=0; i<10000000000; i++) a=a+1;
-})
+    var format = formats['pdf'];
+    format.process(html, val + format.ext);
+  }
+) // forEach
